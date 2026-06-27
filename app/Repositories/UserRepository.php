@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Repositories;
+
+use App\Models\User;
+
+class UserRepository
+{
+    public function create(array $attributes): User
+    {
+        return User::query()->create($attributes);
+    }
+
+    public function update(User $user, array $attributes): User
+    {
+        $user->update($attributes);
+
+        return $user->refresh();
+    }
+
+    public function delete(User $user): void
+    {
+        $user->delete();
+    }
+}
