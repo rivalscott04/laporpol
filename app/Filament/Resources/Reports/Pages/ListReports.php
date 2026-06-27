@@ -37,18 +37,23 @@ class ListReports extends ListRecords
                 ->label('Unduh Excel')
                 ->icon(Heroicon::OutlinedTableCells)
                 ->exporter(ReportExporter::class)
-                ->visible(fn (): bool => $this->canExportReports()),
+                ->visible(fn (): bool => $this->canExportReports())
+                ->disabled(fn (): bool => ! $this->hasExportableReportRecords())
+                ->tooltip(fn (): ?string => $this->reportExportDisabledTooltip()),
             Action::make('exportPdf')
                 ->label('Unduh PDF')
                 ->icon(Heroicon::OutlinedDocumentArrowDown)
                 ->action(fn (): mixed => $this->exportReportsPdf())
-                ->visible(fn (): bool => $this->canExportReports()),
+                ->visible(fn (): bool => $this->canExportReports())
+                ->disabled(fn (): bool => ! $this->hasExportableReportRecords())
+                ->tooltip(fn (): ?string => $this->reportExportDisabledTooltip()),
         ];
     }
 
     public function exportReportsPdf(): mixed
     {
         abort_unless($this->canExportReports(), 403);
+        abort_unless($this->hasExportableReportRecords(), 404);
 
         return app(ReportPdfExportService::class)->download(
             $this->getTableQueryForExport(),

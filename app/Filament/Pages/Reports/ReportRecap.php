@@ -110,23 +110,28 @@ class ReportRecap extends Page implements HasTable
                 ->label('Unduh Excel')
                 ->icon(Heroicon::OutlinedTableCells)
                 ->exporter(ReportExporter::class)
-                ->visible(fn (): bool => $this->canExportReports()),
+                ->visible(fn (): bool => $this->canExportReports())
+                ->disabled(fn (): bool => ! $this->hasExportableReportRecords())
+                ->tooltip(fn (): ?string => $this->reportExportDisabledTooltip()),
             Action::make('exportPdf')
                 ->label('Unduh PDF')
                 ->icon(Heroicon::OutlinedDocumentArrowDown)
                 ->action(fn (): mixed => $this->exportRecapPdf())
-                ->visible(fn (): bool => $this->canExportReports()),
+                ->visible(fn (): bool => $this->canExportReports())
+                ->disabled(fn (): bool => ! $this->hasExportableReportRecords())
+                ->tooltip(fn (): ?string => $this->reportExportDisabledTooltip()),
         ];
     }
 
     public function exportRecapPdf(): mixed
     {
         abort_unless($this->canExportReports(), 403);
+        abort_unless($this->hasExportableReportRecords(), 404);
 
         $recap = $this->getRecap();
 
         return app(ReportPdfExportService::class)->download(
-            $this->getTableQuery(),
+            $this->getTableQueryForExport(),
             'Rekap Laporan: '.$recap->periodLabel,
             'rekap-laporan-'.now()->format('Y-m-d-His').'.pdf',
         );
