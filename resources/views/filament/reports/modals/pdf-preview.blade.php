@@ -1,5 +1,7 @@
-<iframe
-    src="{{ $url }}"
-    title="Pratinjau PDF"
-    class="h-[70vh] w-full rounded-lg border-0"
-></iframe>
+<div class="-mx-6 -mb-6 flex min-h-0 flex-1">
+    <iframe
+        src="{{ $url }}"
+        title="Pratinjau PDF"
+        class="min-h-0 w-full flex-1 border-0"
+    ></iframe>
+</div>

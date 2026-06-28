@@ -159,7 +159,8 @@ class ReportInfolist
             ->modalHeading('Lampiran PDF')
             ->modalSubmitAction(false)
             ->modalCancelActionLabel('Tutup')
-            ->modalWidth(Width::SevenExtraLarge)
+            ->modalWidth(Width::Screen)
+            ->stickyModalHeader()
             ->modalContent(fn (Report $record) => view('filament.reports.modals.pdf-preview', [
                 'url' => ReportMediaUrl::attachment($record),
             ]));
