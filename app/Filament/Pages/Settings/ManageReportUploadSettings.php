@@ -54,8 +54,8 @@ class ManageReportUploadSettings extends Page
         abort_unless(static::canAccess(), 403);
 
         $this->form->fill([
-            'photo_max_kb' => $settingService->photoMaxKb(),
-            'attachment_max_kb' => $settingService->attachmentMaxKb(),
+            'photo_max_mb' => (int) round($settingService->photoMaxKb() / 1024),
+            'attachment_max_mb' => (int) round($settingService->attachmentMaxKb() / 1024),
         ]);
     }
 
@@ -66,8 +66,8 @@ class ManageReportUploadSettings extends Page
         $data = $this->form->getState();
 
         $settingService->updateReportUploadSettings([
-            'photo_max_kb' => (int) $data['photo_max_kb'],
-            'attachment_max_kb' => (int) $data['attachment_max_kb'],
+            'photo_max_kb' => (int) $data['photo_max_mb'] * 1024,
+            'attachment_max_kb' => (int) $data['attachment_max_mb'] * 1024,
         ]);
 
         Notification::make()
@@ -97,24 +97,24 @@ class ManageReportUploadSettings extends Page
         return $schema
             ->components([
                 Section::make('Ukuran File yang Diizinkan')
-                    ->description('Atur seberapa besar foto dan lampiran boleh diunggah. Angka 1024 setara dengan 1 MB.')
+                    ->description('Atur seberapa besar foto dan lampiran boleh diunggah, dalam satuan MB (megabyte).')
                     ->schema([
-                        TextInput::make('photo_max_kb')
+                        TextInput::make('photo_max_mb')
                             ->label('Ukuran Maksimal Foto')
                             ->numeric()
                             ->required()
                             ->minValue(1)
-                            ->maxValue(10240)
-                            ->suffix('KB')
-                            ->helperText('Contoh: isi 1024 jika batasnya 1 MB.'),
-                        TextInput::make('attachment_max_kb')
+                            ->maxValue(10)
+                            ->suffix('MB')
+                            ->helperText('Contoh: isi 1 jika batasnya 1 MB.'),
+                        TextInput::make('attachment_max_mb')
                             ->label('Ukuran Maksimal Lampiran PDF')
                             ->numeric()
                             ->required()
                             ->minValue(1)
-                            ->maxValue(10240)
-                            ->suffix('KB')
-                            ->helperText('Contoh: isi 1024 jika batasnya 1 MB.'),
+                            ->maxValue(10)
+                            ->suffix('MB')
+                            ->helperText('Contoh: isi 1 jika batasnya 1 MB.'),
                     ])
                     ->columns(2),
             ]);
