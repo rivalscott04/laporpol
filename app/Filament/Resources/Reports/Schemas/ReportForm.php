@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Reports\Schemas;
 
-use App\Enums\Permission;
 use App\Filament\Resources\Reports\Pages\CreateReport;
 use App\Services\SettingService;
 use Filament\Forms\Components\DatePicker;
@@ -13,6 +12,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 
 class ReportForm
@@ -41,23 +41,27 @@ class ReportForm
                                     ->maxLength(255)
                                     ->columnSpanFull(),
                                 Section::make('Titik Lokasi')
-                                    ->description('Salin koordinat dari Google Maps atau aplikasi peta di ponsel. Isi angka desimal, bukan format derajat.')
+                                    ->description('Koordinat diambil otomatis dari browser. Klik "Ambil Lokasi" jika belum terisi atau ingin memperbarui.')
                                     ->schema([
+                                        View::make('filament.reports.components.geolocation-capture')
+                                            ->columnSpanFull(),
                                         TextInput::make('latitude')
                                             ->label('Garis Lintang')
-                                            ->placeholder('Contoh: -6.2000000')
-                                            ->helperText('Angka antara -90 dan 90. Angka minus berarti lokasi di belahan bumi selatan.')
+                                            ->placeholder('Menunggu lokasi…')
+                                            ->helperText('Diisi otomatis setelah izin lokasi diberikan.')
                                             ->required()
                                             ->numeric()
+                                            ->readOnly()
                                             ->step('0.0000001')
                                             ->minValue(-90)
                                             ->maxValue(90),
                                         TextInput::make('longitude')
                                             ->label('Garis Bujur')
-                                            ->placeholder('Contoh: 106.8166667')
-                                            ->helperText('Angka antara -180 dan 180. Angka minus berarti lokasi di sebelah barat.')
+                                            ->placeholder('Menunggu lokasi…')
+                                            ->helperText('Diisi otomatis setelah izin lokasi diberikan.')
                                             ->required()
                                             ->numeric()
+                                            ->readOnly()
                                             ->step('0.0000001')
                                             ->minValue(-180)
                                             ->maxValue(180),
