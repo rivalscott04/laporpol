@@ -162,7 +162,7 @@ class ReportInfolist
             ->modalWidth(Width::Screen)
             ->stickyModalHeader()
             ->modalContent(fn (Report $record) => view('filament.reports.modals.pdf-preview', [
-                'url' => ReportMediaUrl::attachment($record),
+                'url' => ReportMediaUrl::attachmentPreview($record),
             ]));
     }
 

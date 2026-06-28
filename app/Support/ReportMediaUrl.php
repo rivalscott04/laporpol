@@ -27,6 +27,17 @@ class ReportMediaUrl
         );
     }
 
+    public static function attachmentPreview(Report $report): ?string
+    {
+        $url = self::attachment($report);
+
+        if ($url === null) {
+            return null;
+        }
+
+        return route('pdf.viewer', ['file' => $url]);
+    }
+
     public static function url(?string $path, string $disk): ?string
     {
         if ($path === null) {
