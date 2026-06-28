@@ -35,7 +35,7 @@ class ReportMediaUrl
             return null;
         }
 
-        return route('pdf.viewer', ['file' => $url]);
+        return asset('pdfjs/web/viewer.html').'?file='.rawurlencode($url);
     }
 
     public static function url(?string $path, string $disk): ?string

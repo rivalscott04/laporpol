@@ -156,13 +156,16 @@ class ReportInfolist
             ->label('Pratinjau PDF')
             ->icon(Heroicon::OutlinedDocumentMagnifyingGlass)
             ->color('gray')
-            ->modalHeading('Lampiran PDF')
+            ->modalHeading(fn (Report $record): string => filled($record->attachment_path)
+                ? basename($record->attachment_path)
+                : 'Lampiran PDF')
             ->modalSubmitAction(false)
             ->modalCancelAction(false)
             ->modalWidth(Width::Screen)
-            ->stickyModalHeader()
             ->modalContent(fn (Report $record) => view('filament.reports.modals.pdf-preview', [
-                'url' => ReportMediaUrl::attachmentPreview($record),
+                'viewerUrl' => ReportMediaUrl::attachmentPreview($record),
+                'openUrl' => ReportMediaUrl::attachmentPreview($record),
+                'downloadUrl' => ReportMediaUrl::attachment($record),
             ]));
     }
 
