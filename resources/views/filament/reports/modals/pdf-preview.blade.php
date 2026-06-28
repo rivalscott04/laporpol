@@ -1,8 +1,55 @@
-<div
-    class="-mx-6 -mb-6 flex min-h-0 flex-col overflow-hidden"
-    style="height: calc(100dvh - 7.5rem);"
->
-    <div class="flex shrink-0 gap-3 border-b border-gray-200 px-6 py-3 dark:border-white/10">
+<style>
+    .fi-modal-pdf-preview.fi-modal-window {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        overflow: hidden !important;
+    }
+
+    .fi-modal-pdf-preview .fi-modal-header {
+        flex-shrink: 0;
+        border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+    }
+
+    .fi-modal-pdf-preview .fi-modal-content {
+        display: flex !important;
+        flex: 1 1 0% !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+    }
+
+    .fi-pdf-preview-root {
+        display: flex;
+        flex: 1 1 0%;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .fi-pdf-preview-actions {
+        flex-shrink: 0;
+    }
+
+    .fi-pdf-preview-viewer {
+        flex: 1 1 0%;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .fi-pdf-preview-viewer iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+</style>
+
+<div class="fi-pdf-preview-root">
+    <div class="fi-pdf-preview-actions flex gap-3 border-b border-gray-200 px-6 py-3 dark:border-white/10">
         <a
             href="{{ $openUrl }}"
             target="_blank"
@@ -22,11 +69,10 @@
         </a>
     </div>
 
-    <div wire:ignore class="min-h-0 flex-1 overflow-hidden bg-gray-800">
+    <div wire:ignore class="fi-pdf-preview-viewer">
         <iframe
             src="{{ $viewerUrl }}"
             title="Pratinjau PDF"
-            class="h-full w-full border-0"
             allow="fullscreen"
         ></iframe>
     </div>

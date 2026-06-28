@@ -162,10 +162,13 @@ class ReportInfolist
             ->modalSubmitAction(false)
             ->modalCancelAction(false)
             ->modalWidth(Width::Screen)
+            ->extraModalWindowAttributes([
+                'class' => 'fi-modal-pdf-preview',
+            ])
             ->modalContent(fn (Report $record) => view('filament.reports.modals.pdf-preview', [
-                'viewerUrl' => ReportMediaUrl::attachmentPreview($record),
-                'openUrl' => ReportMediaUrl::attachmentPreview($record),
-                'downloadUrl' => ReportMediaUrl::attachment($record),
+                'viewerUrl' => ReportMediaUrl::attachment($record),
+                'openUrl' => ReportMediaUrl::attachment($record),
+                'downloadUrl' => ReportMediaUrl::attachmentDownload($record),
             ]));
     }
 
@@ -175,7 +178,7 @@ class ReportInfolist
             ->label('Unduh PDF')
             ->icon(Heroicon::OutlinedArrowDownTray)
             ->color('gray')
-            ->url(fn (Report $record): ?string => ReportMediaUrl::attachment($record))
+            ->url(fn (Report $record): ?string => ReportMediaUrl::attachmentDownload($record))
             ->openUrlInNewTab();
     }
 

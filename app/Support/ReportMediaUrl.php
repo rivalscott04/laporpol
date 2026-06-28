@@ -21,21 +21,20 @@ class ReportMediaUrl
 
     public static function attachment(Report $report): ?string
     {
-        return self::url(
-            $report->attachment_path,
-            (string) config('reports.attachment_disk', 'local'),
-        );
-    }
-
-    public static function attachmentPreview(Report $report): ?string
-    {
-        $url = self::attachment($report);
-
-        if ($url === null) {
+        if (blank($report->attachment_path)) {
             return null;
         }
 
-        return asset('pdfjs/web/viewer.html').'?file='.rawurlencode($url);
+        return route('reports.attachment', $report);
+    }
+
+    public static function attachmentDownload(Report $report): ?string
+    {
+        if (blank($report->attachment_path)) {
+            return null;
+        }
+
+        return route('reports.attachment', ['report' => $report, 'download' => 1]);
     }
 
     public static function url(?string $path, string $disk): ?string

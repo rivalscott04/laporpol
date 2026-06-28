@@ -3,8 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "npm run copy-pdfjs && vite build",
-        "copy-pdfjs": "rm -rf public/pdfjs && mkdir -p public/pdfjs && curl -fsSL \"https://github.com/mozilla/pdf.js/releases/download/v3.11.174/pdfjs-3.11.174-dist.zip\" -o /tmp/pdfjs-dist.zip && unzip -qo /tmp/pdfjs-dist.zip -d public/pdfjs",
+        "build": "vite build",
         "dev": "vite"
     },
     "devDependencies": {
