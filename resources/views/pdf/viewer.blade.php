@@ -6,17 +6,31 @@
         <title>Pratinjau PDF</title>
         <link rel="stylesheet" href="{{ asset('pdfjs/pdf_viewer.css') }}">
         <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+
             html,
             body {
                 margin: 0;
+                width: 100%;
                 height: 100%;
+                overflow: hidden;
                 background: #525252;
+            }
+
+            body {
+                position: fixed;
+                inset: 0;
             }
 
             #viewerContainer {
                 position: absolute;
                 inset: 0;
                 overflow: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
             #viewer {
@@ -44,13 +58,19 @@
                 eventBus,
                 linkService,
                 textLayerMode: 0,
+                removePageBorders: false,
             });
 
             linkService.setViewer(pdfViewer);
 
-            eventBus.on('pagesinit', () => {
+            const fitToWidth = () => {
                 pdfViewer.currentScaleValue = 'page-width';
-            });
+            };
+
+            eventBus.on('pagesinit', fitToWidth);
+            eventBus.on('pagesloaded', fitToWidth);
+
+            window.addEventListener('resize', fitToWidth);
 
             pdfjsLib.getDocument(file).promise.then((pdfDocument) => {
                 pdfViewer.setDocument(pdfDocument);
