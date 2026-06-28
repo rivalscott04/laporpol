@@ -14,6 +14,7 @@ use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
@@ -161,7 +162,11 @@ class ReportInfolist
                 : 'Lampiran PDF')
             ->modalSubmitAction(false)
             ->modalCancelAction(false)
-            ->modalWidth(Width::Screen)
+            ->modalWidth(Width::Full)
+            ->modalAlignment(Alignment::Center)
+            ->extraModalOverlayAttributes([
+                'class' => 'fi-modal-pdf-preview-overlay backdrop-blur-md',
+            ])
             ->extraModalWindowAttributes([
                 'class' => 'fi-modal-pdf-preview',
             ])

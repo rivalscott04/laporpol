@@ -1,15 +1,34 @@
 <style>
+    .fi-modal-pdf-preview-overlay {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+        min-height: 100svh !important;
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+    }
+
     .fi-modal-pdf-preview.fi-modal-window {
         display: flex !important;
         flex-direction: column !important;
-        height: 100dvh !important;
-        max-height: 100dvh !important;
+        width: 100% !important;
+        max-width: min(96vw, 80rem) !important;
+        height: min(92dvh, 56rem) !important;
+        max-height: 92dvh !important;
         overflow: hidden !important;
     }
 
     .fi-modal-pdf-preview .fi-modal-header {
         flex-shrink: 0;
         border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+    }
+
+    .fi-modal-pdf-preview .fi-modal-heading {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .fi-modal-pdf-preview .fi-modal-content {
@@ -38,6 +57,7 @@
         flex: 1 1 0%;
         min-height: 0;
         overflow: hidden;
+        background-color: #525252;
     }
 
     .fi-pdf-preview-viewer iframe {
@@ -46,33 +66,56 @@
         height: 100%;
         border: 0;
     }
+
+    @media (max-width: 639px) {
+        .fi-modal-pdf-preview.fi-modal-window {
+            max-width: calc(100vw - 1rem) !important;
+            height: calc(100dvh - 1.5rem) !important;
+            max-height: calc(100dvh - 1.5rem) !important;
+        }
+    }
+
+    @media (min-width: 640px) and (max-width: 1023px) {
+        .fi-modal-pdf-preview.fi-modal-window {
+            max-width: min(94vw, 48rem) !important;
+            height: min(90dvh, 52rem) !important;
+            max-height: 90dvh !important;
+        }
+    }
 </style>
 
 <div class="fi-pdf-preview-root">
-    <div class="fi-pdf-preview-actions flex gap-3 border-b border-gray-200 px-6 py-3 dark:border-white/10">
-        <a
-            href="{{ $openUrl }}"
+    <div class="fi-pdf-preview-actions grid grid-cols-1 gap-2 px-4 py-3 sm:grid-cols-2 sm:gap-3 sm:px-6 sm:py-4">
+        <x-filament::button
+            tag="a"
+            :href="$openUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex flex-1 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-950 shadow-sm transition hover:bg-gray-50 dark:border-white/20 dark:bg-gray-900 dark:text-white dark:hover:bg-white/5"
+            color="gray"
+            outlined
+            class="w-full justify-center"
         >
             Buka di Tab Baru
-        </a>
+        </x-filament::button>
 
-        <a
-            href="{{ $downloadUrl }}"
+        <x-filament::button
+            tag="a"
+            :href="$downloadUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex flex-1 items-center justify-center rounded-lg border border-primary-600 bg-white px-4 py-2.5 text-sm font-medium text-primary-600 shadow-sm transition hover:bg-primary-50 dark:border-primary-500 dark:bg-gray-900 dark:text-primary-400 dark:hover:bg-primary-500/10"
+            color="success"
+            outlined
+            class="w-full justify-center"
         >
             Unduh PDF
-        </a>
+        </x-filament::button>
     </div>
 
     <div wire:ignore class="fi-pdf-preview-viewer">
         <iframe
             src="{{ $viewerUrl }}"
             title="Pratinjau PDF"
+            class="h-full w-full"
             allow="fullscreen"
         ></iframe>
     </div>
